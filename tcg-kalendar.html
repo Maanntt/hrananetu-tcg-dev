@@ -495,10 +495,14 @@ const AV_COLORS = ['#f97316','#a259ff','#22c55e','#3b82f6','#ec4899','#06b6d4','
    LOCAL STORAGE CONFIG
    ══════════════════════════════════════════════════════ */
 function saveConfig() {
+  // Načti existující config a updatuj jen dostupné elementy
+  const existing = loadConfig();
+  const apiKeyEl = document.getElementById('cfg-api-key');
+  const calIdEl  = document.getElementById('cfg-cal-id');
   const cfg = {
-    apiKey: document.getElementById('cfg-api-key').value.trim(),
-    calId:  document.getElementById('cfg-cal-id').value.trim(),
-    sheets: {}
+    apiKey: apiKeyEl ? apiKeyEl.value.trim() : existing.apiKey || '',
+    calId:  calIdEl  ? calIdEl.value.trim()  : existing.calId  || '',
+    sheets: existing.sheets || {}
   };
   LEAGUES.forEach(l => {
     const el = document.getElementById('sheet-' + l.id);
@@ -1183,20 +1187,23 @@ async function loadTopPlayers() {
 }
 
 // Spusť po načtení stránky
-document.addEventListener('DOMContentLoaded', function() {
-  loadTopPlayers();
-  // Načti kalendář automaticky z localStorage
+document.addEventListener('DOMContentLoaded', async function() {
+  initUI();
+  renderCalendar();
+
+  // Načti API config z localStorage (nastaveno na úvodní stránce)
   const cfg = loadConfig();
   if (cfg.apiKey && cfg.calId) {
-    loadGoogleCalendar(cfg.apiKey, cfg.calId)
-      .then(() => {
-        const s = document.getElementById('cfg-status');
-        if (s) s.textContent = '';
-      })
-      .catch(e => console.log('Calendar error:', e));
+    try {
+      await loadGoogleCalendar(cfg.apiKey, cfg.calId);
+    } catch(e) {
+      console.log('Calendar load error:', e);
+    }
+  } else {
+    // Zobraz prázdný kalendář s textem
+    const grid = document.getElementById('kal-grid');
+    if (grid) grid.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text3)">Nastav Google Calendar API na úvodní stránce.</div>';
   }
-  renderCalendar();
-  initUI();
 });
 
 </script>
