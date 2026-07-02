@@ -1183,7 +1183,21 @@ async function loadTopPlayers() {
 }
 
 // Spusť po načtení stránky
-document.addEventListener('DOMContentLoaded', loadTopPlayers);
+document.addEventListener('DOMContentLoaded', function() {
+  loadTopPlayers();
+  // Načti kalendář automaticky z localStorage
+  const cfg = loadConfig();
+  if (cfg.apiKey && cfg.calId) {
+    loadGoogleCalendar(cfg.apiKey, cfg.calId)
+      .then(() => {
+        const s = document.getElementById('cfg-status');
+        if (s) s.textContent = '';
+      })
+      .catch(e => console.log('Calendar error:', e));
+  }
+  renderCalendar();
+  initUI();
+});
 
 </script>
 
