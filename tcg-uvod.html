@@ -272,310 +272,198 @@ footer a{color:var(--pl);text-decoration:none}
 
 <div id="admin-area" style="text-align:center;padding:12px 0 4px">
   <span id="admin-trigger" onclick="adminAuth()" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;opacity:.3;transition:opacity .3s" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='.3'" title=""></span>
-  <div class="setup-panel" id="setup-panel" style="text-align:left;margin:16px 28px 0;max-width:1280px;margin-left:auto;margin-right:auto">
-    <div class="setup-label">Google Calendar</div>
-    <div class="setup-row" style="grid-column:1/-1;margin-bottom:8px">
-      <div class="setup-lbl"><span class="setup-dot" style="background:var(--purple)"></span>API Key</div>
-      <input class="setup-inp" id="cfg-api-key" type="password" placeholder="AIzaSy..."/>
+  <div class="setup-panel" id="setup-panel" style="text-align:left;margin:16px 28px 0;max-width:640px;margin-left:auto;margin-right:auto">
+    <div class="setup-label">Master Config Sheet</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:14px">Jeden centrální Google Sheet obsahuje vše: Sheets ID lig, ceny, Google Calendar API a sezóny.</div>
+    <div class="setup-row" style="grid-column:1/-1;margin-bottom:14px">
+      <div class="setup-lbl"><span class="setup-dot" style="background:var(--gold)"></span>Master Sheet ID nebo odkaz</div>
+      <input class="setup-inp" id="master-sheet-id" placeholder="Vlož ID nebo celý odkaz na Google Sheet..."/>
     </div>
-    <div class="setup-row" style="grid-column:1/-1;margin-bottom:16px">
-      <div class="setup-lbl"><span class="setup-dot" style="background:var(--purple)"></span>Calendar ID</div>
-      <input class="setup-inp" id="cfg-cal-id" placeholder="abc@group.calendar.google.com"/>
-    </div>
-    <div class="setup-label">Config Sheet</div>
-    <div class="setup-row" style="grid-column:1/-1;margin-bottom:8px">
-      <div class="setup-lbl"><span class="setup-dot" style="background:var(--gold)"></span>Config Sheet ID <span style="font-size:9px;color:var(--text3);font-weight:400;text-transform:none">(ceny, ligy, sezóny)</span></div>
-      <input class="setup-inp" id="sid-config" placeholder="Sheets ID centrálního config sheetu..."/>
-    </div>
-    <div class="setup-label" style="margin-top:8px">Google Sheets — Ligy</div>
-          <div class="setup-grid">
-      <div class="setup-row"><div class="setup-lbl"><span class="setup-dot" style="background:#4ade80"></span>Flesh and Blood</div><input class="setup-inp" id="sid-fab" placeholder="Sheets ID..."/></div>
-      <div class="setup-row"><div class="setup-lbl"><span class="setup-dot" style="background:#fcd34d"></span>Gundam</div><input class="setup-inp" id="sid-gd" placeholder="Sheets ID..."/></div>
-      <div class="setup-row"><div class="setup-lbl"><span class="setup-dot" style="background:#b39ddb"></span>MTG Draft</div><input class="setup-inp" id="sid-mtgd" placeholder="Sheets ID..."/></div>
-      <div class="setup-row"><div class="setup-lbl"><span class="setup-dot" style="background:#9b4dff"></span>MTG Modern</div><input class="setup-inp" id="sid-mtgm" placeholder="Sheets ID..."/></div>
-      <div class="setup-row"><div class="setup-lbl"><span class="setup-dot" style="background:#a78bfa"></span>MTG Pauper</div><input class="setup-inp" id="sid-mtgpa" placeholder="Sheets ID..."/></div>
-      <div class="setup-row"><div class="setup-lbl"><span class="setup-dot" style="background:#c51df5"></span>MTG Premodern</div><input class="setup-inp" id="sid-mtgp" placeholder="Sheets ID..."/></div>
-      <div class="setup-row"><div class="setup-lbl"><span class="setup-dot" style="background:#f87171"></span>One Piece</div><input class="setup-inp" id="sid-op" placeholder="Sheets ID..."/></div>
-      <div class="setup-row"><div class="setup-lbl"><span class="setup-dot" style="background:#ffcb05"></span>Pokémon</div><input class="setup-inp" id="sid-pk" placeholder="Sheets ID..."/></div>
-      <div class="setup-row"><div class="setup-lbl"><span class="setup-dot" style="background:#7fb3f5"></span>Riftbound</div><input class="setup-inp" id="sid-rb" placeholder="Sheets ID..."/></div>
-      <div class="setup-row"><div class="setup-lbl"><span class="setup-dot" style="background:#c084fc"></span>Sorcery</div><input class="setup-inp" id="sid-so" placeholder="Sheets ID..."/></div>
-      <div class="setup-row"><div class="setup-lbl"><span class="setup-dot" style="background:#fb923c"></span>Yu-Gi-Oh!</div><input class="setup-inp" id="sid-ygo" placeholder="Sheets ID..."/></div>
-    </div>
-    <div class="setup-bottom">
-      <select class="setup-sel" id="setup-season">
-        <option value="Léto 2026">Letní sezóna 2026</option>
-        <option value="Jaro 2026">Jarní sezóna 2026</option>
-        <option value="Podzim 2026">Podzimní sezóna 2026</option>
-        <option value="Zima 2026">Zimní sezóna 2026</option>
-        <option value="Zima 2025">Zimní sezóna 2025</option>
-      </select>
-      <button class="setup-btn" onclick="saveAndLoad()">Uložit a načíst data</button>
-      <span class="setup-status" id="setup-status"></span>
-    </div>
+    <button class="setup-btn" onclick="saveAndLoad()">Načíst a uložit</button>
+    <span class="setup-status" id="setup-status"></span>
   </div>
-
 </div>
+
 <footer>
   <div>© 2026 Hrana Stolu s.r.o. · <a href="https://www.hrananetu.cz">HranaNetu.cz</a> · Úvoz 466/8, 602 00 Brno</div>
 </footer>
 
 <script>
 const LEAGUES = [
-  {id:'fab', color:'#4ade80', sheet:'Flesh and Blood liga'},
-  {id:'gd', color:'#fcd34d', sheet:'Gundam liga'},
-  {id:'mtgd', color:'#b39ddb', sheet:'MTG Draft liga'},
-  {id:'mtgm', color:'#9b4dff', sheet:'MTG Modern liga'},
-  {id:'mtgpa', color:'#a78bfa', sheet:'MTG Pauper liga'},
-  {id:'mtgp', color:'#c51df5', sheet:'MTG Premodern liga'},
-  {id:'op', color:'#f87171', sheet:'One Piece liga'},
-  {id:'pk', color:'#ffcb05', sheet:'Pokémon liga'},
-  {id:'rb', color:'#7fb3f5', sheet:'Riftbound liga'},
-  {id:'so', color:'#c084fc', sheet:'Sorcery liga'},
-  {id:'ygo', color:'#fb923c', sheet:'Yu-Gi-Oh! liga'},
+  {id:'fab', color:'#4ade80'},
+  {id:'gd', color:'#fcd34d'},
+  {id:'mtgd', color:'#b39ddb'},
+  {id:'mtgm', color:'#9b4dff'},
+  {id:'mtgpa', color:'#a78bfa'},
+  {id:'mtgp', color:'#c51df5'},
+  {id:'mtgstd', color:'#22d3ee'},
+  {id:'op', color:'#f87171'},
+  {id:'pk', color:'#ffcb05'},
+  {id:'rb', color:'#7fb3f5'},
+  {id:'so', color:'#c084fc'},
+  {id:'ygo', color:'#fb923c'},
 ];
 
 // ── Načti uložené hodnoty do inputů ──
 
-/* ══════════════════════════════════════════
-   CENTRÁLNÍ CONFIG SHEET
-   
-   Struktura Sheetu:
-   List "Sezóny": Sezóna | Začátek | Konec | Finále | (Aktivní - auto)
-   List "Ligy":   Liga ID | Název | Sheets ID
-   List "Ceny":   Liga | Formát | 1.místo | 2.místo | 3-4.místo | 5-8.místo | Body1 | Body2 | Body3-4 | Body5-8
-   ══════════════════════════════════════════ */
 
-const CONFIG_KEY = 'hn_config';
+// ── Mapování názvů lig (v master sheetu) na ID ──
+const LEAGUE_NAME_MAP = {
+  'flesh and blood': 'fab', 'flesh & blood': 'fab',
+  'gundam': 'gd',
+  'mtg draft': 'mtgd',
+  'mtg modern': 'mtgm',
+  'mtg pauper': 'mtgpa',
+  'mtg premodern': 'mtgp',
+  'mtg standard': 'mtgstd',
+  'one piece': 'op',
+  'pokémon': 'pk', 'pokemon': 'pk',
+  'riftbound': 'rb',
+  'sorcery': 'so',
+  'yu-gi-oh!': 'ygo', 'yu-gi-oh': 'ygo', 'yugioh': 'ygo',
+};
 
-function saveConfigSheetId(id) {
-  localStorage.setItem(CONFIG_KEY, id);
+function extractSheetId(raw) {
+  const match = (raw||'').match(/\/d\/([a-zA-Z0-9_-]+)/);
+  return match ? match[1] : (raw||'').replace(/[^a-zA-Z0-9_-]/g,'').trim();
 }
 
-function getConfigSheetId() {
-  return localStorage.getItem(CONFIG_KEY) || '';
+function parseCzechDate(str) {
+  const m = (str||'').trim().match(/^(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})$/);
+  if (!m) return null;
+  return new Date(parseInt(m[3]), parseInt(m[2])-1, parseInt(m[1]));
 }
 
-function parseCzechDateStr(str) {
-  if (!str) return null;
-  str = str.trim().replace(/\s+/g, '');
-  const m = str.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
-  if (m) return new Date(parseInt(m[3]), parseInt(m[2])-1, parseInt(m[1]));
-  return null;
-}
-
-// Automatické určení aktivní sezóny z dat finále
-function determineActiveSeason(seasons) {
+function determineActiveSeason(seasonRows) {
+  // seasonRows: [[Sezóna, Začátek, Konec], ...]
   const today = new Date(); today.setHours(0,0,0,0);
-  
-  // Najdi sezónu jejíž finále proběhlo méně než 1 den nebo ještě neproběhlo
-  for (const s of seasons) {
-    if (!s.finale) continue;
-    const finaleDate = parseCzechDateStr(s.finale);
-    if (!finaleDate) continue;
-    
-    // Den po finále = finaleDate + 1
-    const dayAfter = new Date(finaleDate);
-    dayAfter.setDate(dayAfter.getDate() + 1);
-    
-    const startDate = parseCzechDateStr(s.start);
-    if (!startDate) continue;
-    
-    // Aktivní pokud: dnes >= začátek sezóny A dnes < den po finále
-    if (today >= startDate && today < dayAfter) {
-      return s;
-    }
+  for (const row of seasonRows) {
+    const start = parseCzechDate(row[1]);
+    const end   = parseCzechDate(row[2]);
+    if (start && end && today >= start && today <= end) return row[0];
   }
-  
-  // Fallback - nejbližší budoucí sezóna
-  const future = seasons.filter(s => {
-    const d = parseCzechDateStr(s.start);
-    return d && d > today;
-  }).sort((a,b) => parseCzechDateStr(a.start) - parseCzechDateStr(b.start));
-  
-  if (future.length) return future[0];
-  
-  // Poslední sezóna
-  return seasons[seasons.length - 1];
+  // Fallback - nejbližší budoucí sezóna, jinak poslední v seznamu
+  const future = seasonRows
+    .map(r => ({ name: r[0], start: parseCzechDate(r[1]) }))
+    .filter(r => r.start && r.start > today)
+    .sort((a,b) => a.start - b.start);
+  if (future.length) return future[0].name;
+  return seasonRows.length ? seasonRows[seasonRows.length-1][0] : null;
 }
 
-async function loadConfigSheet() {
-  const sheetId = getConfigSheetId();
-  if (!sheetId) return null;
-  
-  const config = { seasons: [], leagues: {}, prizes: [] };
-  
-  try {
-    // ── List Sezóny ──
-    const urlS = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent('Sezóny')}`;
-    const resS = await fetch(urlS);
-    if (resS.ok) {
-      const rows = parseCSV(await resS.text());
-      // Header: Sezóna | Začátek | Konec | Finále
-      rows.slice(1).forEach(r => {
-        if (!r[0]) return;
-        config.seasons.push({
-          name:    r[0]?.trim() || '',
-          start:   r[1]?.trim() || '',
-          end:     r[2]?.trim() || '',
-          finale:  r[3]?.trim() || '',
-        });
-      });
-    }
-
-    // ── List Ligy ──
-    const urlL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent('Ligy')}`;
-    const resL = await fetch(urlL);
-    if (resL.ok) {
-      const rows = parseCSV(await resL.text());
-      // Header: Liga ID | Název | Sheets ID
-      rows.slice(1).forEach(r => {
-        const id = r[0]?.trim();
-        if (!id) return;
-        config.leagues[id] = {
-          name:    r[1]?.trim() || '',
-          sheetId: r[2]?.trim() || '',
-        };
-      });
-    }
-
-    // ── List Ceny ──
-    const urlC = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent('Ceny')}`;
-    const resC = await fetch(urlC);
-    if (resC.ok) {
-      const rows = parseCSV(await resC.text());
-      // Header: Liga | Formát | 1.místo | 2.místo | 3-4.místo | 5-8.místo | Body1 | Body2 | Body3-4 | Body5-8
-      rows.slice(1).forEach(r => {
-        if (!r[0]) return;
-        config.prizes.push({
-          liga:   r[0]?.trim() || 'Všechny',
-          format: r[1]?.trim() || '',
-          p1:     r[2]?.trim() || '',
-          p2:     r[3]?.trim() || '',
-          p34:    r[4]?.trim() || '',
-          p58:    r[5]?.trim() || '',
-
-        });
-      });
-    }
-
-    // Ulož Sheets ID lig z config Sheetu do localStorage
-    Object.entries(config.leagues).forEach(([id, data]) => {
-      if (!data.sheetId) return;
-      // Zjisti aktuální sezónu pro tab
-      const activeSeason = config.seasons.length ? determineActiveSeason(config.seasons) : null;
-      const tab = activeSeason ? activeSeason.name : '';
-      localStorage.setItem('hn_' + id, JSON.stringify({sheetId: data.sheetId, tab}));
-    });
-
-    // Ulož aktivní sezónu
-    if (config.seasons.length) {
-      const active = determineActiveSeason(config.seasons);
-      if (active) {
-        localStorage.setItem('hn_active_season', JSON.stringify(active));
-        // Aktualizuj hero label
-        const el = document.getElementById('hero-label');
-        if (el) {
-          const yr = active.name.match(/\d{4}/)?.[0] || new Date().getFullYear();
-          el.textContent = active.name;
-        }
-      }
-    }
-
-    // Ulož celý config
-    localStorage.setItem('hn_config_data', JSON.stringify(config));
-    
-    return config;
-  } catch(e) {
-    console.error('Config sheet error:', e);
-    return null;
+// ── Master Sheet loader ──
+async function fetchMasterTab(sheetId, tabName) {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Nelze načíst list "' + tabName + '"');
+  const text = await res.text();
+  if (text.includes('google.visualization') || text.trim().startsWith('/*')) {
+    throw new Error('List "' + tabName + '" nenalezen v Master Sheetu');
   }
+  return parseCSV(text);
 }
 
+async function loadMasterSheet(sheetId) {
+  const [ligyRows, cenyRows, kalRows, sezRows] = await Promise.all([
+    fetchMasterTab(sheetId, 'Ligy'),
+    fetchMasterTab(sheetId, 'Ceny'),
+    fetchMasterTab(sheetId, 'Kalendar'),
+    fetchMasterTab(sheetId, 'Sezony'),
+  ]);
+
+  // ── Sezóny → aktivní sezóna ──
+  const seasonData = sezRows.slice(1).filter(r => r[0]);
+  const activeSeason = determineActiveSeason(seasonData) || 'Léto 2026';
+  localStorage.setItem('hn_cfg', JSON.stringify({season: activeSeason}));
+
+  // ── Kalendář API ──
+  const kal = {};
+  kalRows.slice(1).forEach(r => { if (r[0]) kal[r[0].trim()] = (r[1]||'').trim(); });
+  if (kal['API Key'] || kal['Calendar ID']) {
+    localStorage.setItem('hrananetu_cfg', JSON.stringify({
+      apiKey: kal['API Key'] || '',
+      calId:  kal['Calendar ID'] || '',
+    }));
+  }
+
+  // ── Ligy → Sheets ID pro každou ligu ──
+  ligyRows.slice(1).forEach(r => {
+    const id = (r[0]||'').trim();
+    const sid = (r[2]||'').trim();
+    if (id && sid) {
+      localStorage.setItem('hn_' + id, JSON.stringify({sheetId: sid, tab: activeSeason}));
+    }
+  });
+
+  // ── Ceny → per liga, "Všechny" jako fallback ──
+  const prizes = {};
+  const ensureLeague = (id) => {
+    if (!prizes[id]) prizes[id] = { zeb:{}, top4:{}, top8:{} };
+    return prizes[id];
+  };
+  const applyRow = (target, format, c,d,e,f) => {
+    const fmt = (format||'').toUpperCase().trim();
+    if (fmt.includes('ŽEBŘÍČEK') || fmt === 'ZEBRICEK') {
+      target.zeb = { p1:c||'', p2:d||'', p3:e||'' };
+    } else if (fmt.includes('TOP4') || fmt.includes('TOP 4')) {
+      target.top4 = { p1:c||'', p2:d||'', p34:e||'' };
+    } else if (fmt.includes('TOP8') || fmt.includes('TOP 8')) {
+      target.top8 = { p1:c||'', p2:d||'', p34:e||'', p58:f||'' };
+    }
+  };
+
+  // Nejdřív "Všechny" pro každou ligu
+  const allLeagueIds = Object.values(LEAGUE_NAME_MAP);
+  cenyRows.slice(1).forEach(r => {
+    const ligaName = (r[0]||'').trim();
+    if (ligaName.toLowerCase() === 'všechny') {
+      allLeagueIds.forEach(id => applyRow(ensureLeague(id), r[1], r[2],r[3],r[4],r[5]));
+    }
+  });
+  // Pak konkrétní ligy (přepíší "Všechny")
+  cenyRows.slice(1).forEach(r => {
+    const ligaName = (r[0]||'').trim();
+    if (ligaName.toLowerCase() === 'všechny') return;
+    const id = LEAGUE_NAME_MAP[ligaName.toLowerCase()];
+    if (id) applyRow(ensureLeague(id), r[1], r[2],r[3],r[4],r[5]);
+  });
+  localStorage.setItem('hn_prizes', JSON.stringify(prizes));
+
+  return { activeSeason, leaguesCount: ligyRows.length - 1 };
+}
+
+// ── Ulož Master Sheet ID a načti vše ──
 function loadSaved() {
-  // Google Calendar
-  try {
-    const cal = JSON.parse(localStorage.getItem('hrananetu_cfg') || '{}');
-    const ak = document.getElementById('cfg-api-key');
-    const ci = document.getElementById('cfg-cal-id');
-    if (ak && cal.apiKey) ak.value = cal.apiKey;
-    if (ci && cal.calId)  ci.value = cal.calId;
-  } catch(e) {}
-
-  // Config sheet ID
-  const configEl = document.getElementById('sid-config');
-  if (configEl) configEl.value = getConfigSheetId();
-
-  // Ligy Sheets IDs
-  LEAGUES.forEach(l => {
-    const el = document.getElementById('sid-' + l.id);
-    if (!el) return;
-    try {
-      const s = localStorage.getItem('hn_' + l.id);
-      if (s) el.value = JSON.parse(s).sheetId || '';
-    } catch(e) {}
-  });
-  try {
-    const cfg = JSON.parse(localStorage.getItem('hn_cfg') || '{}');
-    if (cfg.season) document.getElementById('setup-season').value = cfg.season;
-  } catch(e) {}
-
-  // Načti aktivní sezónu z config
-  try {
-    const active = JSON.parse(localStorage.getItem('hn_active_season') || 'null');
-    if (active) {
-      const el = document.getElementById('hero-label');
-      if (el) el.textContent = active.name;
-    }
-  } catch(e) {}
+  const el = document.getElementById('master-sheet-id');
+  if (el) {
+    const saved = localStorage.getItem('hn_master_sheet') || '';
+    el.value = saved;
+  }
 }
 
-// ── Ulož a načti data ──
 async function saveAndLoad() {
-  const season = document.getElementById('setup-season').value;
+  const el = document.getElementById('master-sheet-id');
   const status = document.getElementById('setup-status');
-  if (status) status.textContent = 'Ukládám…';
-
-  // Ulož Google Calendar API
-  const apiKeyEl = document.getElementById('cfg-api-key');
-  const calIdEl  = document.getElementById('cfg-cal-id');
-  if (apiKeyEl && calIdEl) {
-    const apiKey = apiKeyEl.value.trim();
-    const calId  = calIdEl.value.trim();
-    if (apiKey || calId) {
-      // Načti existující a updatuj
-      let existing = {};
-      try { existing = JSON.parse(localStorage.getItem('hrananetu_cfg') || '{}'); } catch(e) {}
-      localStorage.setItem('hrananetu_cfg', JSON.stringify({
-        apiKey: apiKey || existing.apiKey || '',
-        calId:  calId  || existing.calId  || '',
-      }));
-    }
+  if (!el || !el.value.trim()) {
+    if (status) status.textContent = '⚠ Vlož Master Sheet ID';
+    return;
   }
 
-  // Ulož Config Sheet ID
-  const configEl = document.getElementById('sid-config');
-  if (configEl && configEl.value.trim()) {
-    const raw = configEl.value.trim();
-    const match = raw.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    const cid = match ? match[1] : raw.replace(/[^a-zA-Z0-9_-]/g,'');
-    saveConfigSheetId(cid);
+  const sheetId = extractSheetId(el.value.trim());
+  localStorage.setItem('hn_master_sheet', sheetId);
+
+  if (status) status.textContent = 'Načítám Master Sheet…';
+  try {
+    const result = await loadMasterSheet(sheetId);
+    if (status) status.textContent = `✓ Načteno (${result.leaguesCount} lig, sezóna ${result.activeSeason})`;
+  } catch(err) {
+    if (status) status.textContent = '⚠ ' + err.message;
+    return;
   }
 
-  // Ulož Sheets ID každé ligy
-  LEAGUES.forEach(l => {
-    const el = document.getElementById('sid-' + l.id);
-    if (!el || !el.value.trim()) return;
-    const raw = el.value.trim();
-    const match = raw.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    const sheetId = match ? match[1] : raw.replace(/[^a-zA-Z0-9_-]/g,'').substring(0,44);
-    if (sheetId) localStorage.setItem('hn_' + l.id, JSON.stringify({sheetId, tab: season}));
-  });
-  localStorage.setItem('hn_cfg', JSON.stringify({season}));
-
-  if (status) status.textContent = 'Načítám data…';
-  await loadAllTopPlayers(season);
+  await loadAllTopPlayers();
   await loadStats();
-  if (status) status.textContent = '✓ Uloženo a načteno';
+  await loadWeekFromCalendar();
 }
 
 // ── Načti TOP3 pro všechny ligy ──
@@ -861,6 +749,8 @@ async function loadStats(season) {
 }
 
 
+
+
 /* ── ADMIN AUTH ── */
 const ADMIN_KEY = 'hn_admin_auth';
 
@@ -886,16 +776,16 @@ function adminAuth() {
 // ── START ──
 document.getElementById("stat-leagues").textContent = LEAGUES.length;
 loadSaved();
-// Načti config sheet automaticky při startu
 (async () => {
-  const cid = getConfigSheetId();
-  if (cid) {
-    await loadConfigSheet();
+  // Pokud je Master Sheet uložen, automaticky ho znovu načti (čerstvá data)
+  const masterSheetId = localStorage.getItem('hn_master_sheet');
+  if (masterSheetId) {
+    try { await loadMasterSheet(masterSheetId); } catch(e) { console.warn('Master sheet reload failed:', e); }
   }
   await loadAllTopPlayers();
   await loadStats();
+  await loadWeekFromCalendar();
 })();
-loadWeekFromCalendar();
 </script>
 
 
